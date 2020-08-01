@@ -14,8 +14,7 @@
 %
 % Optional inputs:
 %   'channels'  - [integer] selected channel(s) {default all}
-%channels = [1:EEG.nbchan];
-channels = [7 11];
+channels = [1:EEG.nbchan];
 %
 % Outputs:
 %   OUTEEG     - output dataset with update events
