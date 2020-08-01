@@ -5,7 +5,7 @@
 % Summary
 %   Detect burst actvities in each channel based on the ovelapping of slow
 %   waves and fast waves. Both waves are identified by applying
-%   amplitude-thresholding method to band-passed slowfrequency component
+%   amplitude-thresholding method to band-passed slow frequency component
 %   and band-passed fast frequency component. 
 
 % Inputs:
@@ -41,9 +41,8 @@ eventname = 'burst';
 
 for iChan = 1:length(channels)
     
-    for iepoch = 1:EEG.trials
-        
-        %look for slow waves and fast waves
+    for iepoch = 1:EEG.trials      
+       %% look for slow waves and fast waves
         
         % initialize waveThresh to zeros/FALSE (indicate the exisitance of slow
         % wave
@@ -61,16 +60,16 @@ for iChan = 1:length(channels)
         windowLo = round(EEG.srate*rmswinLo);
         winSamplesLo = [windowLo(1):windowLo(2)];
         rmsMoveAvLo = zeros(1, EEG.pnts);
-        for iSample = 1+windowLo(2):EEG.pnts+windowLo(1)-1
-            rmsMoveAvLo(iSample) = rmsave(sigLo(1, iSample+winSamplesLo));
+        for iSample = 1 + windowLo(2):EEG.pnts + windowLo(1) - 1
+            rmsMoveAvLo(iSample) = rmsave(sigLo(1, iSample + winSamplesLo));
         end
         % compute RMS value using sliding window method for fast frequency
         % component
         windowHi = round(EEG.srate*rmswinHi);
         winSamplesHi = [windowHi(1):windowHi(2)];
         rmsMoveAvHi = zeros(1, EEG.pnts);
-        for iSample = 1+windowHi(2):EEG.pnts+windowHi(1)-1
-            rmsMoveAvHi(iSample) = rmsave(sigHi(1, iSample+winSamplesHi));
+        for iSample = 1 + windowHi(2):EEG.pnts + windowHi(1) - 1
+            rmsMoveAvHi(iSample) = rmsave(sigHi(1, iSample + winSamplesHi));
         end
         % compute amplitude threshold for each signals
         thresholdLo = std(rmsMoveAvLo)*threshold;
@@ -80,8 +79,7 @@ for iChan = 1:length(channels)
         waveThreshLo = waveThreshLo | rmsMoveAvLo > thresholdLo;
         waveThreshHi = waveThreshHi | rmsMoveAvHi > thresholdHi;
         
-        
-        %look for bursts regions (overlapping of slow and fast waves)
+        %% look for bursts regions (overlapping of slow and fast waves)
         
         burstLowLimits = round(EEG.srate*eventwin(1));
         burstHiLimits = round(EEG.srate*eventwin(2));
@@ -115,6 +113,6 @@ for iChan = 1:length(channels)
     end
 end
 
-% resort events
+%% resort events
 [~,ind] = sort([EEG.event.latency]);
 EEG.event = EEG.event(ind);

@@ -38,10 +38,10 @@ for ichan = 1:length(channels)
             position = [position, EEG.event(ievent).latency];
             duration = [duration, EEG.event(ievent).duration];
             % extract burst
-            burst = EEG.data(channels(ichan),EEG.event(ievent).latency:EEG.event(ievent).latency+EEG.event(ievent).duration);
+            burst = EEG.data(channels(ichan),EEG.event(ievent).latency:EEG.event(ievent).latency+EEG.event(ievent).duration);  
             burst1 = signal1(EEG.event(ievent).latency:EEG.event(ievent).latency+EEG.event(ievent).duration);
             burst2 = signal2(EEG.event(ievent).latency:EEG.event(ievent).latency+EEG.event(ievent).duration);
-            % calculata power and convert to dB
+            % calculate power and convert to dB
             p = pow2db(bandpower(burst));
             p1 = pow2db(bandpower(burst1));
             p2 = pow2db(bandpower(burst2));
@@ -110,7 +110,4 @@ for ichan = 1:length(channels)
 %     ylabel('duration (s)')
 %
 end
-
-    
-
-        
+   
