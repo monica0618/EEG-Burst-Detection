@@ -12,6 +12,12 @@
 %   Burst event needs to be named in the form of Channel Name + '_burst'
 %   (eg. 'Cz_burst'). 
 %
+%   Annotated 'Lo' for variables related to slow waves components, 'Hi' for variables
+%   related to fast waves components and 'burst' for regions with both
+%   waves exists
+%
+%   There are six plot options, only choose 1 at a time to avoid errors.
+%
 % Optional inputs:
 %   'channels'  - [integer] selected channel(s) {default all}
 channels = [1:EEG.nbchan];
@@ -28,8 +34,8 @@ for ichan = 1:length(channels)
     powerall = []; % power of original burst signal
     
     %filter the signal
-    signal1 = eegfiltfft(EEG.data(channels(ichan),:),EEG.srate,0.5,2);
-    signal2 = eegfiltfft(EEG.data(channels(ichan),:),EEG.srate,0.5,70);
+    signalLo = eegfiltfft(EEG.data(channels(ichan),:),EEG.srate,0.5,2);
+    signalHi = eegfiltfft(EEG.data(channels(ichan),:),EEG.srate,8,22);
 
     for(ievent = 1:length(EEG.event))
         % check whether the burst belongs to current channel
@@ -37,17 +43,19 @@ for ichan = 1:length(channels)
         if EEG.event(ievent).type == burstname
             position = [position, EEG.event(ievent).latency];
             duration = [duration, EEG.event(ievent).duration];
-            % extract burst
+            % extract burst and its slow wave component and fast wave
+            % component
             burst = EEG.data(channels(ichan),EEG.event(ievent).latency:EEG.event(ievent).latency+EEG.event(ievent).duration);  
-            burst1 = signal1(EEG.event(ievent).latency:EEG.event(ievent).latency+EEG.event(ievent).duration);
-            burst2 = signal2(EEG.event(ievent).latency:EEG.event(ievent).latency+EEG.event(ievent).duration);
+            burstLo = signalLo(EEG.event(ievent).latency:EEG.event(ievent).latency+EEG.event(ievent).duration);
+            burstHi = signalHi(EEG.event(ievent).latency:EEG.event(ievent).latency+EEG.event(ievent).duration);
             % calculate power and convert to dB
-            p = pow2db(bandpower(burst));
-            p1 = pow2db(bandpower(burst1));
-            p2 = pow2db(bandpower(burst2));
+            p = pow2db(bandpower(burst)); % power of orginal burst
+            pLo = pow2db(bandpower(burstLo)); % power of slow wave component
+            pHi = pow2db(bandpower(burstHi)); % power of fast wave component
+            % save the value of power in an array
             powerall = [powerall,p];
-            powerlo = [powerlo,p1];
-            powerhi = [powerhi,p2];
+            powerlo = [powerlo,pLo];
+            powerhi = [powerhi,pHi];
         end
     end
     

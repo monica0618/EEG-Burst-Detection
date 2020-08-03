@@ -10,6 +10,9 @@
 %   This code is designed to apply burst detection in multiple selected
 %   channels automatically, update new events with the name of the channel
 %   where the burst is located.
+% Notes:
+%   annotated 'Lo' for variables related to slow waves, 'Hi' for variables
+%   related to fast waves and 'burst' for regions with both waves 
 
 % Inputs:
 %   INEEG      - input dataset
