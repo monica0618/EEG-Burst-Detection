@@ -1,4 +1,4 @@
-% burstpowerPlot - Calculate burst power and plot against position.
+% burstpowerplot - Calculate burst power and plot against time position.
 % Version: v1.0
 % Author: Zitong Li, UCL, 2020
 %

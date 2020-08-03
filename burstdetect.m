@@ -3,10 +3,13 @@
 % Author: Zitong Li, UCL, 2020
 %
 % Summary
-%   Detect burst actvities in each channel based on the ovelapping of slow
+%   Detect burst actvities in each channel based on the overlapping of slow
 %   waves and fast waves. Both waves are identified by applying
 %   amplitude-thresholding method to band-passed slow frequency component
 %   and band-passed fast frequency component. 
+%   This code is designed to apply burst detection in multiple selected
+%   channels automatically, update new events with the name of the channel
+%   where the burst is located.
 
 % Inputs:
 %   INEEG      - input dataset
